@@ -25,8 +25,8 @@ public class UserController {
 	{
 		User user = userService.createUser(
 				request.username(),
-				request.password(),
-				request.email()
+				request.email(),
+				request.password()
 		);
 		return ResponseEntity.ok(user);
 	}
