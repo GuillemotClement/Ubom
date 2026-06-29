@@ -30,6 +30,12 @@
       }
     </div>
 
+    @if (errorMessage) {
+      <p class="text-red-500">
+        {{ errorMessage }}
+      </p>
+    }
+
     <div class="">
       <button type="submit" class="btn">Connexion</button>
     </div>

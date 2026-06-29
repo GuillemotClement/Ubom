@@ -5,14 +5,17 @@
     <li>
       <a [routerLink]="['']">Accueil</a>
     </li>
-    <details class="dropdown">
-      <summary class="btn m-1">Menu</summary>
-      <ul class="menu dropdown-content bg-base-100 rounded-box z-1 w-30 p-2 shadow-sm">
-        <li>
-          <a [routerLink]="['register']">Inscription</a>
-          <a [routerLink]="['login']">Connexion</a>
-        </li>
-      </ul>
-    </details>
+    @if (authService.isAuthenticated()) {
+      <li>
+        <button class="btn" (click)="logout()">Logout</button>
+      </li>
+    } @else {
+      <li>
+        <a [routerLink]="['register']">Inscription</a>
+      </li>
+      <li>
+        <a [routerLink]="['login']">Connexion</a>
+      </li>
+    }
   </ul>
 </header>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { handleError } from '../../services/helpers/error.helper';
 
 // interface pour typer les valeurs du formulaire
 export interface RegisterForm {
@@ -80,8 +81,8 @@ export class Register {
       const data = await response.json();
 
       console.log(data);
-    } catch (error: any) {
-      console.error(error.message);
+    } catch (err) {
+      handleError(err, 'register user');
     }
   }
 }

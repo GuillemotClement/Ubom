@@ -16,7 +16,6 @@ public class AuthService {
 	}
 
 	public User checkUserCredential(String email, String password) {
-		System.out.println("Login attempt for : " + email);
 
 		Optional<User> user = userService.getUserByEmail(email);
 
@@ -30,10 +29,8 @@ public class AuthService {
 
 		// on vérifie si user existe, donc on peut recuperer les données retourner
 		User existingUser = user.get();
-		System.out.println("User found: " + existingUser.getEmail());
 
 		boolean passwordValid = userService.checkPassword(password, existingUser.getPassword());
-		System.out.println("Password valid: " + passwordValid);
 
 		if (!passwordValid) {
 			System.out.println("Invalid password");

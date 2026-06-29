@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.guillemotclement.backend.dto.LoginDTO;
+import io.github.guillemotclement.backend.dto.LoginResponseDTO;
 import io.github.guillemotclement.backend.entity.User;
 import io.github.guillemotclement.backend.service.AuthService;
 import io.github.guillemotclement.backend.service.JwtService;
@@ -27,11 +28,9 @@ public class AuthController {
   }
   
   @PostMapping("/login")
-  public ResponseEntity<User> login(@RequestBody LoginDTO request) {
+  public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginDTO request) {
     User user = authService.checkUserCredential(request.email(), request.password());
     String token = jwtService.generateToken(user.getEmail());
-
-    System.out.println("Token generate: " + token);
 
     // permet l'envoie du cookie avec le token JWT en HttpOnly
     ResponseCookie cookie = ResponseCookie
@@ -43,8 +42,8 @@ public class AuthController {
       .sameSite("Lax") // Strict for prod / Lax for dev
       .build();
 
-    System.out.println("Cookie: " + cookie.toString());
+    LoginResponseDTO userResponse = new LoginResponseDTO(user.getId(), user.getUsername(), user.getEmail());
 
-    return ResponseEntity.ok().header("Set-Cookie", cookie.toString()).body(user);
+    return ResponseEntity.ok().header("Set-Cookie", cookie.toString()).body(userResponse);
   }
 }
