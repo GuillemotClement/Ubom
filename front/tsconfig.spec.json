@@ -9,6 +9,10 @@
       "vitest/globals"
     ]
   },
+  "angularCompilerOptions": {
+    "strictTemplates": true,
+    "preserveWhitespaces": true
+  },
   "include": [
     "src/**/*.d.ts",
     "src/**/*.spec.ts"

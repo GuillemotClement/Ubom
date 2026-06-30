@@ -5,4 +5,10 @@ import { Component } from '@angular/core';
   imports: [],
   templateUrl: './home.html',
 })
-export class Home {}
+export class Home {
+  isRegister = false;
+
+  toggleForm(){
+    this.isRegister = !this.isRegister
+  }
+}
