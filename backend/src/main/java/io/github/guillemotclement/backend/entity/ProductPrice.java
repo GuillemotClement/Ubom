@@ -22,9 +22,9 @@ public class ProductPrice {
   @Column(nullable = false, precision = 10, scale = 2)
   BigDecimal amount;
 
-  @Column(nullable = false, updatable = false, name="created_at")
+  @Column(nullable = false, updatable = false, name="recorded_at")
   @CreationTimestamp
-  private LocalDateTime createdAt;
+  private LocalDateTime recordedAt;
 
   @Column(nullable = true, name="deleted_at")
   private LocalDateTime deletedAt;
@@ -48,8 +48,8 @@ public class ProductPrice {
     return amount;
   }
 
-  public LocalDateTime getCreatedAt() {
-    return createdAt;
+  public LocalDateTime getRecordedAt() {
+    return recordedAt;
   }
 
   public LocalDateTime getDeletedAt() {

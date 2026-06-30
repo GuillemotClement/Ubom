@@ -3,6 +3,7 @@ import { Register } from './auth/register/register';
 import { Home } from './home/home';
 import { Login } from './auth/login/login';
 import { CreateProduct } from './product/create-product/create-product';
+import { ListProduct } from './product/list-product/list-product';
 
 export const routeConfig: Routes = [
   {
@@ -18,7 +19,11 @@ export const routeConfig: Routes = [
     component: Login,
   },
   {
-    path: 'product/create',
+    path: 'products',
+    component: ListProduct,
+  },
+  {
+    path: 'products/create',
     component: CreateProduct,
   },
 ];

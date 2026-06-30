@@ -5,19 +5,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.github.guillemotclement.backend.dto.product.CreateProductRequestDTO;
 import io.github.guillemotclement.backend.dto.product.ListProductCategoryDTO;
+import io.github.guillemotclement.backend.dto.product.ListProductDTO;
 import io.github.guillemotclement.backend.entity.Product;
 import io.github.guillemotclement.backend.entity.ProductCategory;
 import io.github.guillemotclement.backend.repository.ProductCategoryRepository;
+import io.github.guillemotclement.backend.service.JwtService;
 import io.github.guillemotclement.backend.service.ProductService;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
-
-
 
 @RestController
 @RequestMapping("/api/products")
@@ -27,24 +29,37 @@ public class ProductController {
 
   public ProductController(
     ProductService productService,
-    ProductCategoryRepository productCategoryRepository
+    ProductCategoryRepository productCategoryRepository,
+    JwtService jwtService
   ){
     this.productService = productService;
     this.productCategoryRepository = productCategoryRepository;
   }
 
   @PostMapping
-  public ResponseEntity<Product> createProduct(@RequestBody CreateProductRequestDTO request) {
+  public ResponseEntity<Product> createProduct(
+    @RequestBody CreateProductRequestDTO request,
+    @CookieValue("jwt") String token
+  ) {
       Product product = productService.createProduct(
         request.name(), 
         request.description(), 
         request.categoryId(), 
-        request.amount()
+        request.amount(),
+        token
       );
       
-      return ResponseEntity.ok(product);
+      return ResponseEntity.status(HttpStatus.CREATED).body(product);
   }
 
+  @GetMapping
+  public ResponseEntity<List<ListProductDTO>> getUserActiveProducts(
+    @CookieValue("jwt") String token
+  ) {
+      List<ListProductDTO> products = productService.getUserActiveProducts(token);
+      return ResponseEntity.ok(products);
+  }
+  
   @GetMapping("/category")
   public ResponseEntity<List<ListProductCategoryDTO>> getProductCategory() {
     // appelle vers la methode qui recupere toutes les categories

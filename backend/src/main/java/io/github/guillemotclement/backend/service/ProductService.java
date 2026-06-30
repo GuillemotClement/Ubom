@@ -1,17 +1,13 @@
 package io.github.guillemotclement.backend.service;
 
 import java.math.BigDecimal;
-import java.util.Optional;
+import java.util.List;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
+import io.github.guillemotclement.backend.dto.product.ListProductDTO;
 import io.github.guillemotclement.backend.entity.Product;
 import io.github.guillemotclement.backend.entity.ProductPrice;
-import io.github.guillemotclement.backend.entity.User;
 import io.github.guillemotclement.backend.repository.ProductPriceRepository;
 import io.github.guillemotclement.backend.repository.ProductRepository;
 @Service
@@ -34,30 +30,10 @@ public class ProductService {
     String name, 
     String description, 
     Long categoryId, 
-    BigDecimal amount
+    BigDecimal amount,
+    String token
   ){
-    // GET USER =======================================================
-    //récupération de user depuis le token ============================
-    // TODO: extract recuperation userID
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-    if(authentication == null || !authentication.isAuthenticated()){
-      throw new RuntimeException("User not authenticated");
-    }
-    // permet de recuperer le subject du token JWT
-    String userEmail = authentication.getName();
-    // =========================
-    // recuperation de userID 
-    Optional<User> user = userService.getUserByEmail(userEmail);
-    if (user.isEmpty()) {
-			System.out.println("User not found: " + userEmail);
-			throw new ResponseStatusException(
-					HttpStatus.UNAUTHORIZED,
-					"User not found"
-			);
-		}
-
-		Long userId = user.get().getId();
+		Long userId = userService.extractUserIdFromTokenJwt(token);
 
     // ENREGISTREMENT DU PRODUIT
     Product product = new Product(
@@ -75,5 +51,12 @@ public class ProductService {
     productPriceRepository.save(productPrice);
 
     return product;    
+  }
+
+  public List<ListProductDTO> getUserActiveProducts(
+    String token
+  ){
+    Long userId = userService.extractUserIdFromTokenJwt(token);
+    return productRepository.findUserActiveProducts(userId);
   }
 }

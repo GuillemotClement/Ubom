@@ -6,7 +6,8 @@
       <a [routerLink]="['']">Accueil</a>
     </li>
     @if (authService.isAuthenticated()) {
-      <li><a [routerLink]="['/product/create']">Nouveau produit</a></li>
+      <li><a [routerLink]="['/products/create']">Nouveau produit</a></li>
+      <li><a [routerLink]="['/products']">Mes produits</a></li>
       <li>
         <button class="btn" (click)="logout()">Logout</button>
       </li>
