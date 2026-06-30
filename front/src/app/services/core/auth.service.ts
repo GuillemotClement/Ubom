@@ -2,6 +2,10 @@ import { Injectable, signal, computed } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { handleError } from '../helpers/error.helper';
 
+// import { HttpClient } from "@angular/common/http";
+// import { inject, Injectable } from "@angular/core";
+// import { ApiService } from "./api.service";
+
 export interface User {
   id: number;
   username: string;
@@ -56,3 +60,21 @@ export class AuthService {
   // export comme Observable si besoin
   user$ = toObservable(this.userSignal);
 }
+
+// interface LoginRequest {
+//   email: string;
+//   username: string;
+//   password: string;
+// }
+
+// @Injectable({
+//   providedIn: 'root'
+// })
+// export class AuthService{
+//   private http = inject(HttpClient);
+//   private api = inject(ApiService);
+
+//   login(credentials: LoginRequest){
+//     return 
+//   }
+// }
