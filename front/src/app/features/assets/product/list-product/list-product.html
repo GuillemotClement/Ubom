@@ -1,0 +1,26 @@
+<div class="container mx-auto">
+  <div class="overflow-x-auto">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Catégorie</th>
+          <th>Prix</th>
+          <th>Ajouter le</th>
+          <th>Dernière mise à jour</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (product of products; track product.id) {
+          <tr>
+            <td>{{ product.name }}</td>
+            <td>{{ product.categoryName }}</td>
+            <td>{{ product.amount }}</td>
+            <td>{{ product.createdAt | fullDateFr }}</td>
+            <td>{{ product.updatedAt | fullDateFr }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

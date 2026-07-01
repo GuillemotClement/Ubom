@@ -1,59 +1,160 @@
-# Front
+## Architecture
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.1.
-
-## Development server
-
-To start a local development server, run:
-
-```bash
-ng serve
+```
+src/
+└── app/
+    ├── core/
+    ├── | authentication
+    |   │   ├── auth.service.ts
+    |   │   ├── auth.store.ts
+    |   │   └── token.service.ts
+    |   │
+    |   ├── guards
+    |   │   └── auth.guard.ts
+    |   │
+    |   ├── interceptors
+    |   │   ├── jwt.interceptor.ts
+    |   │   └── error.interceptor.ts
+    |   │
+    |   |-- config
+    |   |   |-- api.config.ts
+    |   |   |-- environment.developments.ts
+    |   |
+    |   └── layout
+    |        ├── navbar
+    |        ├── sidebar
+    |        └── footer
+    ├── shared/
+    ├── components
+    │     ├── button
+    │     ├── modal
+    │     ├── card
+    │     ├── confirm-dialog
+    │     ├── badge
+    │     └── empty-state
+    │   ├── directives/
+    │   ├── pipes/
+    │   ├── validators/
+    │   └── utils/
+    │
+    ├── features/
+    │   │
+    │   ├── assets/
+    │   │   ├── pages/
+            ├── asset-list
+                ├── SearchBarComponent
+                ├── FilterComponent
+                ├── AssetListComponent
+                └── FloatingButtonComponent
+            ├── asset-detail
+            ├── asset-create
+            └── asset-edit
+    │   │   ├── components/
+                ├── asset-card
+                ├── asset-form
+                ├── asset-table
+                ├── asset-status
+                ├── asset-timeline
+                └── asset-price-history
+    │   │   ├── services/
+                └── asset.service.ts
+    │   │   ├── models/
+              ├── asset.ts
+              ├── create-asset.ts
+              ├── update-asset.ts
+              └── asset-response.ts
+    │   │   ├── enums/
+                └── asset-status.enum.ts
+    │   │   └── assets.routes.ts
+    │   │
+    │   ├── inventory/
+    │   ├── meals/
+    │   ├── events/
+    │   ├── household/
+    │   └── watchlist/
+    │
+    ├── app.routes.ts
+    ├── app.component.ts
+    └── app.config.ts
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+`core`: tout ce qui est utilisé une seule fois dans le projet
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- `layout`: compose l'interface principale
+- `services` : contient les services globaux
+- `config`: contiens les configurations globales du projet
 
-```bash
-ng generate component component-name
+---
+
+# Convention
+
+
+
+## Typage 
+
+Chaque features suit une structure pour implémenter les typages.
+
+```
+features/{domain}/
+├── types/
+│   ├── domain/
+│   ├── api/
+│   └── ui/
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### `domain`
+Représente l'entité du domaine
 
-```bash
-ng generate --help
+```ts
+//features/assets/types/domain/asset.ts
+export type Asset = {
+  id: number;
+  name: string;
+  purchasePrice: number;
+  status: AssetStatus;
+};
 ```
 
-## Building
+### `api`
 
-To build the project run:
+Représente les échange avec le backend.
 
-```bash
-ng build
+**Convention de nommage**
+```
+create-asset.request.ts
+update-asset.request.ts
+asset.response.ts
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
+**Exemple**
+Par exemple, le typage pour la request permettant de créer un nouvel asset
+```ts
+//features/assets/types/api/create-asset.request.ts
+export type CreateAssetRequest = {
+  name: string;
+  purchasePrice: number;
+};
 ```
 
-## Running end-to-end tests
+### `ui`
 
-For end-to-end (e2e) testing, run:
+Représente les données utilisées par l'interface utilisateur (formulaire, tableaux, filtres, affichage formaté)
 
-```bash
-ng e2e
+**Convention de nommage**
+```
+AssetForm
+AssetTableRow
+AssetFilter
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+**Exemple**
+```ts
+//features/assets/types/ui/asset-form.ts
+export type AssetForm = {
+  name: string;
+  purchasePrice: string; // input HTML
+  invoiceFile?: File;
+};
+```
