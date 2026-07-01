@@ -1,0 +1,56 @@
+
+<div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+  <div class="card-body">
+    <form class="fieldset" (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+      <h1 class="text-5xl font-bold mb-5">Connexion</h1>
+      <div class="mb-3">
+        <label class="label" for="email">Email</label>
+        <input  
+          type="email" 
+          class="input" 
+          placeholder="Email" 
+          id="email" 
+          formControlName="email"
+        />
+        @if(email.invalid && (email.dirty || email.touched)){
+          <div class="text-red-500 italic text-center mt-3">
+            @if(email.hasError('required')){
+              <p>Un email est requis</p>
+            }
+            @if(email.hasError('email')){
+              <p>L'email est invalide</p>
+            }
+          </div>
+        }
+      </div>
+      
+      <div class="">
+        <label class="label" for="password">Password</label>
+        <input 
+          type="password" 
+          class="input" 
+          placeholder="Password"
+          id="password"
+          formControlName="password"
+        />
+        @if (password.invalid && (password.dirty || password.touched)) {
+          <div class="text-red-500 italic text-center mt-3">
+            @if(password.hasError('required')) {
+              <p>Un mot de passe est requis</p>
+            }
+            @if(password.hasError('minlength')) {
+              <p>Le mot de passe est invalide</p>
+            }
+          </div>
+        }
+      </div>
+      
+      <div class="flex justify-between my-3">
+        <!-- <button class="link link-hover">Forgot password?</button> -->
+        <button class="link link-hover" (click)="goToRegister()">Je n'ai pas de compte</button>
+      </div>
+
+      <button class="btn btn-neutral">Connexion</button>
+    </form>
+  </div>
+</div>

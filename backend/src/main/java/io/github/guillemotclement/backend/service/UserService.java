@@ -12,16 +12,18 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final JwtService jwtService;
 
 	public UserService(
 		UserRepository userRepository,
-		PasswordEncoder passwordEncoder
+		PasswordEncoder passwordEncoder,
+		JwtService jwtService
 	) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.jwtService = jwtService;
 	}
 
 	// definition des methodes metiers
@@ -53,5 +55,20 @@ public class UserService {
 
 	public boolean checkPassword(String password, String hashedPassword){
 		return passwordEncoder.matches(password, hashedPassword);
+	}
+
+	public Long extractUserIdFromTokenJwt(String token){
+		String email = jwtService.getEmailFromToken(token);
+
+		Optional<User> user = this.getUserByEmail(email);
+    if (user.isEmpty()) {
+			System.out.println("User not found: " + email);
+			throw new ResponseStatusException(
+					HttpStatus.UNAUTHORIZED,
+					"User not found"
+			);
+		}
+
+		return user.get().getId();
 	}
 }

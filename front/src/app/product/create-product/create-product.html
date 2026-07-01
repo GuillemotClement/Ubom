@@ -1,0 +1,29 @@
+<div class="container mx-auto border flex flex-col justify-center items-center w-150">
+  <h1>Create product</h1>
+  <!-- <form (ngSubmit)="onSubmit()" [formGroup]="createProductForm"> -->
+  <form
+    class="flex flex-col w-full justify-center items-center my-10"
+    (ngSubmit)="onSubmit()"
+    [formGroup]="productForm"
+  >
+    <input type="text" placeholder="Nom" class="input" formControlName="name" />
+
+    <select name="" id="" class="select" formControlName="categoryId">
+      <option disabled selected>Select a category</option>
+      @for (category of categories; track category.id) {
+        <option [value]="category.id">
+          {{ category.name }}
+        </option>
+      }
+    </select>
+
+    <input type="number" placeholder="10.00" class="input" formControlName="amount" />
+
+    <textarea class="textarea" placeholder="Description" formControlName="description"></textarea>
+
+    <div class="mt-10">
+      <button type="reset" class="btn me-5">Reset</button>
+      <button type="submit" class="btn btn-primary">Créer</button>
+    </div>
+  </form>
+</div>
